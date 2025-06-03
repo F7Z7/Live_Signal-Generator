@@ -17,6 +17,13 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_startPlot_clicked();
+
+    void on_stopPlot_clicked();
+
+    void on_resetPlot_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
