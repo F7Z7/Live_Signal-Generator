@@ -32,17 +32,43 @@ MainWindow::~MainWindow()
 }
 void MainWindow::on_startPlot_clicked()
 {
+    // If already plotting prevent double start
+    if (startButtonClicked && !stopButtonClicked) {
+        QMessageBox::warning(this, "Invalid Command", "The signal is already being plotted.");
+        return;
+    }
 
+    // If plot exists but user hasn't stopped or reset, force reset first
+    if (hasPlotted && !stopButtonClicked && !resetButtonClicked) {
+        QMessageBox::critical(this, "Invalid Command", "Clear the existing graph before starting a new one.");
+        return;
+    }
 
+    // If reset was clicked before or no plot exists, clear data and start fresh
+    if (resetButtonClicked || !hasPlotted) {
+        t = 0;
+        X.clear();
+        Y.clear();
 
-   // generatePlot(signalType,freq);
-    t=0;
-   X.clear();
-    Y.clear();
-    timer->start(30);
+        resetButtonClicked = false; // We are now starting fresh, so reset flag off
+    }
 
+    // If stopped before and plot exists, this is a resume
+    if (stopButtonClicked && hasPlotted) {
+        // QMessageBox::information(this, "Feedback", "Graph is resumed from the last position");
+       //graph will resume
+    }
 
+    // Start or resume the timer once
+    timer->start(50);
+
+    // Update button states
+    startButtonClicked = true;
+    stopButtonClicked = false;
+    hasPlotted = true;
 }
+
+
 
 void MainWindow::update_plot(){
     QString signalType = ui->signalDrop->currentText();
@@ -53,7 +79,10 @@ void MainWindow::update_plot(){
         return;
     }
 
-    dt = 0.05;
+    //dt = 0.05;
+    int samples=20;
+    dt=1.0/(freq*samples);
+
     t += dt;
     X.append(t);
 
@@ -96,6 +125,10 @@ void MainWindow::update_plot(){
 void MainWindow::on_stopPlot_clicked()
 {
     timer->stop();
+    stopButtonClicked=true;
+    hasPlotted=true;
+
+
 }
 
 
@@ -107,7 +140,7 @@ void MainWindow::on_resetPlot_clicked()
     X.clear();
     Y.clear();
     ui->graphPlotter->clearGraphs();
-
+    resetButtonClicked=true;
 
     //readding the graph panel
 
@@ -120,6 +153,10 @@ void MainWindow::on_resetPlot_clicked()
      ui->graphPlotter->legend->setVisible(true);
     ui->graphPlotter->replot();
 
+     resetButtonClicked = true;
+     stopButtonClicked = false;
+     startButtonClicked = false;
+     hasPlotted = false;
 
 }
 

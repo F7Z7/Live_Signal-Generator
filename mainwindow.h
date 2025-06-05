@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 
-#include <QMainWindow>
 #include <QTimer>
 #include <QVector>
 
@@ -36,5 +35,12 @@ private:
     QTimer *timer;
     double freq,t,dt;
     QVector<double> X,Y;
+
+    bool startButtonClicked=false;
+    bool stopButtonClicked=false;
+    bool resetButtonClicked=false;
+    bool hasPlotted=false;
+
+
 };
 #endif // MAINWINDOW_H
