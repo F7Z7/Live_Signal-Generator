@@ -96,13 +96,10 @@ void MainWindow::update_plot(){
         value = (phase < 0.5) ? 1.0 : -1.0;
     }
     else if (signalType == "Triangle") {
-        if (phase < 0.25)
-            value = 4 * phase;
-        else if (phase < 0.75)
-            value = 2 - 4 * phase;
+        if (phase < 0.5)
+            value = 4 * phase - 1;
         else
-            value = -4 + 4 * phase;
-        value = 2 * value - 1; // Normalize to [-1,1]
+            value = 3 - 4 * phase;
     }
     else if (signalType == "SawTooth") {
         value = 2 * phase - 1;
