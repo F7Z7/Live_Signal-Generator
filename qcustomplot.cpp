@@ -24,6 +24,8 @@
 ****************************************************************************/
 
 #include "qcustomplot.h"
+#include <QPrinter>
+
 
 
 /* including file 'src/vector2d.cpp'       */

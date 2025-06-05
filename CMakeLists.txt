@@ -9,7 +9,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-include_directories(${CMAKE_SOURCE_DIR})  # <--- Make sure qcustomplot.h is here
+include_directories(${CMAKE_SOURCE_DIR})
 
 set(PROJECT_SOURCES
     main.cpp
@@ -20,10 +20,14 @@ set(PROJECT_SOURCES
     qcustomplot.h
 )
 
-add_executable(Live_Signal_Generator
-    ${PROJECT_SOURCES}
-)
+# Find both Widgets and PrintSupport modules
+find_package(Qt6 REQUIRED COMPONENTS Widgets PrintSupport)
 
+# Build the executable
+add_executable(Live_Signal_Generator ${PROJECT_SOURCES})
+
+# Link against Qt6 Widgets and PrintSupport libraries
 target_link_libraries(Live_Signal_Generator
     Qt6::Widgets
+    Qt6::PrintSupport
 )
